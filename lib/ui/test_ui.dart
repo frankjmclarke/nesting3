@@ -14,7 +14,7 @@ class StoredListScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          GetBuilder<StorageController>(//for the message on top
+          GetBuilder<StorageController>(
             init: _storageController,
             builder: (_) {
               _storageController.restoreUrlModelList(); // Reload the stored data
@@ -24,11 +24,10 @@ class StoredListScreen extends StatelessWidget {
                   child: Text('No data stored. Test data created.'),
                 );
               }
-              //_storageController.restoreUrlModelList(); // Reload the stored data
               return SizedBox.shrink();
             },
           ),
-          GetBuilder<StorageController>(//for the list
+          GetBuilder<StorageController>(
             init: _storageController,
             builder: (_) {
               if (_storageController.isEmpty) {
@@ -45,30 +44,98 @@ class StoredListScreen extends StatelessWidget {
   }
 }
 
-class CardItem extends StatelessWidget {
+class CardItem extends StatefulWidget {
   const CardItem({
-    super.key,
-    required StorageController storageController,
-  }) : _storageController = storageController;
+    Key? key,
+    required this.storageController,
+  }) : super(key: key);
 
-  final StorageController _storageController;
+  final StorageController storageController;
+
+  @override
+  _CardItemState createState() => _CardItemState();
+}
+
+class _CardItemState extends State<CardItem> {
+  late List<RxBool> selectedList;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedList = List.generate(
+      widget.storageController.length,
+          (_) => RxBool(false),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: _storageController.length,
+        itemCount: widget.storageController.length,
         itemBuilder: (context, index) {
-          UrlModel urlModel = _storageController.urlModelList.urls[index];
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(urlModel.imageUrl),
-            ),
-            title: Text(urlModel.name),
-            subtitle: Text(urlModel.address),
+          UrlModel urlModel = widget.storageController.urlModelList.urls[index];
+          return InkWell(
             onTap: () {
-              // Handle onTap event
+              setState(() {
+                for (int i = 0; i < selectedList.length; i++) {
+                  selectedList[i].value = i == index;
+                }
+              });
             },
+            child: Card(
+              color: selectedList[index].value ? Colors.blue : null,
+              child: ListTile(
+                leading: SizedBox(
+                  height: 96,
+                  width: 96.0, // Set the width equal to the height of the card
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4.0),
+                      // Adjust the border radius as needed
+                      bottomLeft: Radius.circular(4.0),
+                    ),
+                    child: Image.network(
+                      urlModel.imageUrl,
+                      fit: BoxFit.cover, // Crop and center the image
+                      errorBuilder: (context, error, stackTrace) {
+                        // Handle image loading error
+                        return Center(
+                          child: Text('Image not found'),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                title: Text(
+                  urlModel.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(
+                  urlModel.address,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        // Handle delete action
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        // Handle edit action
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
           );
         },
       ),

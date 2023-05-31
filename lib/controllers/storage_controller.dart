@@ -5,9 +5,21 @@ import 'package:get_storage/get_storage.dart';
 
 class StorageController extends GetxController {
   final box = GetStorage();
+
+  final Rx<UrlModelList> _urlModelList = UrlModelList(urls: []).obs;
+  final RxInt _selectedIndex = RxInt(-1);
+
   RxBool isDataLoaded = false.obs;
 
-   Rx<UrlModelList> _urlModelList = Rx<UrlModelList>(UrlModelList(urls: []));
+  //Rx<UrlModelList> _urlModelList = Rx<UrlModelList>(UrlModelList(urls: []));
+
+  int get selectedIndex => _selectedIndex.value;
+  void setSelectedIndex(int index) {
+    _selectedIndex.value = index;
+   // for (int i = 0; i < selectedList.length; i++) {
+  //    selectedList[i].value = i == index;
+  //  }
+  }
 
   Future<void> initStorage() async {
     await GetStorage.init();
