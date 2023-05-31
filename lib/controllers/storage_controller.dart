@@ -6,33 +6,17 @@ import 'package:get_storage/get_storage.dart';
 class StorageController extends GetxController {
   final box = GetStorage();
   RxBool isDataLoaded = false.obs;
-  UrlModelList _urlModelList = UrlModelList(urls: []); // Initialize with empty UrlModelList
-
+  final _urlModelList = Rx<UrlModelList>(UrlModelList(urls: []));
 
   Future<void> initStorage() async {
     await GetStorage.init();
   }
 
-  UrlModelList get urlModelList { // Getter for urlModelList
-    if (!isDataLoaded.value) {
-      _urlModelList = restoreUrlModelList();
-    }
-    return _urlModelList;
-  }
+  UrlModelList get urlModelList => _urlModelList.value;
 
-  int get length {
-    if (!isDataLoaded.value) {
-      _urlModelList = restoreUrlModelList();
-    }
-    return _urlModelList.urls.length;
-  }
+  int get length => _urlModelList.value.length;
 
-  bool get isEmpty {
-    //if (!isDataLoaded.value) {
-   //   _urlModelList = restoreUrlModelList();
-   // }
-    return _urlModelList.urls.isEmpty;
-  }
+  bool get isEmpty => _urlModelList.value.length>0;
 
   void storePriceModel(UrlModel model) {
     box.write('model', model.toMap());
@@ -47,14 +31,12 @@ class StorageController extends GetxController {
     final map = urls.toMap();
     box.write('urlList', map);
   }
-
-  UrlModelList restoreUrlModelList() {
-    final map = box.read('urlList') ?? {}; // Read the stored data from GetStorage
-    final List<Map<String, dynamic>> dataList = (map['urls'] ?? []) as List<Map<String, dynamic>>;
-    _urlModelList = UrlModelList.fromList(dataList); // Initialize UrlModelList with dataList
-    isDataLoaded.value = _urlModelList.isNotEmpty;
-    return _urlModelList;
+  void restoreUrlModelList() {
+    final map = box.read('urlModelList') ?? {};
+    _urlModelList.value = UrlModelList.fromMap(map['urls'] ?? []);
+    isDataLoaded.value = length > 0;
   }
+
   /////////////TEST////////////////
   void createAndStoreTestData() {
     // Create test UrlModel objects

@@ -74,7 +74,6 @@ class UrlModel {
     );
   }
 
-  @override
   String getUrl() {
     return url; // Customize the string representation as per your requirements
   }
@@ -110,7 +109,7 @@ class UrlModelList {
   final List<UrlModel> urls;
 
   UrlModelList({required this.urls});
-
+  int get length => urls.length; // Getter for the length of the list
   factory UrlModelList.fromList(List<Map<String, dynamic>>? dataList) {
     List<UrlModel> urlModels = [];
     if (dataList != null) {

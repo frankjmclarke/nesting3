@@ -35,27 +35,41 @@ class StoredListScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: _storageController.length,
-                  itemBuilder: (context, index) {
-                    UrlModel urlModel = _storageController.urlModelList.urls[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(urlModel.imageUrl),
-                      ),
-                      title: Text(urlModel.name),
-                      subtitle: Text(urlModel.address),
-                      onTap: () {
-                        // Handle onTap event
-                      },
-                    );
-                  },
-                ),
-              );
+              return CardItem(storageController: _storageController);
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CardItem extends StatelessWidget {
+  const CardItem({
+    super.key,
+    required StorageController storageController,
+  }) : _storageController = storageController;
+
+  final StorageController _storageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: _storageController.length,
+        itemBuilder: (context, index) {
+          UrlModel urlModel = _storageController.urlModelList.urls[index];
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(urlModel.imageUrl),
+            ),
+            title: Text(urlModel.name),
+            subtitle: Text(urlModel.address),
+            onTap: () {
+              // Handle onTap event
+            },
+          );
+        },
       ),
     );
   }
