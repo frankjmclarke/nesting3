@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -51,55 +52,6 @@ class CategoryController extends GetxController {
     return false;
   }
 
-  Future<void> _addTextToListIfUnique() async {
-
-      final currentList = firestoreCategoryList.value ?? CategoryModelList(categories: []);
-      final newCategoryModel = CategoryModel(
-        uid: StringUtil.generateRandomId(15),
-        title: 'title',
-        parent: '07hVeZyY2PM7VK8DC5QX',
-        icon: 1,
-        color:1,
-        flag:1,
-        imageUrl: 'https://cdn.onlinewebfonts.com/svg/img_259453.png',
-        numItems:0,
-      );
-      currentList.categories.add(newCategoryModel);
-      firestoreCategoryList.value = currentList;
-      insertCategory(newCategoryModel);
-  }
-/*
-  Future<void> fetchCategoryListByCategory(String category) async {
-    try {
-      final snapshot = await _db
-          .collection('category')
-          .where('category', isEqualTo: category)
-          .get();
-      final cats =
-      snapshot.docs.map((doc) => CategoryModel.fromMap(doc.data())).toList();
-      firestoreCategoryList.value = CategoryModelList(categories: cats);
-
-      _db.collection('category').snapshots().listen((snapshot) {
-        final cats =
-        snapshot.docs.map((doc) => CategoryModel.fromMap(doc.data())).toList();
-        firestoreCategoryList.value = CategoryModelList(categories: cats);
-        print("Firestore collection updated");
-      });
-
-      print("fetchCategoryListByCategory SUCCESS ");
-    } catch (error) {
-      print("Error fetching Category list by category: $error");
-    }
-/*
-    final messageRef = _db
-        .collection("toplevel")
-        .doc("categoryA")
-        .collection("Categorys")
-        .doc("http://google.com");
-
- */
-  }
-*/
   Future<void> fetchCategoryList() async {
     try {
       final snapshot = await _db.collection('category').get();
@@ -200,32 +152,6 @@ class CategoryController extends GetxController {
       print('Error updating Category: $error');
     }
   }
-/*
-  void updateCategory2(CategoryModel updatedCategoryModel) async {
-    final index = firestoreCategoryList.value!.categories
-        .indexWhere((Category) => Category.uid == updatedCategoryModel.uid);
-
-    if (index != -1) {
-      firestoreCategoryList.value!.categories[index] = updatedCategoryModel;
-
-      // Convert the CategoryModelList to a JSON representation
-      final jsonData = firestoreCategoryList.value!.toJson();
-
-      try {
-        // Save the updated list to Firestore
-        await FirebaseFirestore.instance
-            .collection('category')
-            .doc(StringUtil.generateRandomId(12))
-            .update(jsonData as Map<Object, Object?>);
-
-        // Refresh the UI
-        firestoreCategoryList.refresh();
-      } catch (error) {
-        // Handle any errors that occur during the Firestore operation
-        print('Error updating Category: $error');
-      }
-    }
-  }*/
 
   bool saveChanges(CategoryModel updatedCategoryModel) {
     if (updatedCategoryModel.title.isEmpty) {

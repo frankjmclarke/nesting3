@@ -10,6 +10,8 @@ import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'controllers/storage_controller.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
@@ -18,6 +20,7 @@ void main() async {
   Get.put<AuthController>(AuthController());//registers an instance of the AuthController class as a dependency, making it available for other parts of the application to use.
   Get.put<ThemeController>(ThemeController());
   Get.put<LanguageController>(LanguageController());
+  Get.put<StorageController>(StorageController());
   runApp(MyApp());
 }
 

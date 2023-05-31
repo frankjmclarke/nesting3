@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_starter/ui/test_ui.dart';
 import 'package:flutter_starter/ui/url_list_ui.dart';
 import 'package:get/get.dart';
 import '../controllers/category_controller.dart';
@@ -6,18 +7,9 @@ import '../models/category_model.dart';
 
 class CategoryListUI extends StatelessWidget {
   final CategoryController categoryController = Get.put(CategoryController());
+
   @override
   Widget build(BuildContext context) {
-    final List<CategoryModel> cats =
-        categoryController.firestoreCategoryList.value?.categories ?? [];
-/*
-    if (cats.length < 1) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        _nextScreen();
-      });
-      return Container(); // Return an empty container since the screen is not being displayed
-    }
-*/
     return Scaffold(
       appBar: AppBar(
         title: Text('Categories'),
@@ -28,7 +20,7 @@ class CategoryListUI extends StatelessWidget {
       body: Obx(() => ListView.builder(
         itemCount: categoryController.firestoreCategoryList.value?.categories.length,
         itemBuilder: (context, index) {
-          final catModel = categoryController.firestoreCategoryList.value?.categories[index];
+          final CategoryModel? catModel = categoryController.firestoreCategoryList.value?.categories[index];
           return _buildCategoryItem(catModel!);
         },
       )),
@@ -129,7 +121,7 @@ class CategoryListUI extends StatelessWidget {
               child: ListTile(
                 onTap:  () {
                   categoryController.uidCurrent = catModel.uid;
-                  Get.to(() => UrlListUI());
+                  Get.to(() => StoredListScreen());//Get.to(() => UrlListUI())
                 },
                 title: Text(
                   catModel.title,

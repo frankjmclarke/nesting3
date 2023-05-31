@@ -111,9 +111,11 @@ class UrlModelList {
 
   UrlModelList({required this.urls});
 
-  factory UrlModelList.fromList(List<Map> dataList) {
-    List<UrlModel> urlModels =
-    dataList.map((data) => UrlModel.fromMap(data)).toList(growable: false);
+  factory UrlModelList.fromList(List<Map<String, dynamic>>? dataList) {
+    List<UrlModel> urlModels = [];
+    if (dataList != null) {
+      urlModels = dataList.map((data) => UrlModel.fromMap(data)).toList();
+    }
     return UrlModelList(urls: urlModels);
   }
 
@@ -133,4 +135,10 @@ class UrlModelList {
   void add(UrlModel urlModel) {
     urls.add(urlModel);
   }
+  factory UrlModelList.fromMap(Map<String, dynamic> map) {
+    final List<Map> urlMaps = (map['urls'] as List<dynamic>).cast<Map>();
+    List<UrlModel> urlModels = urlMaps.map((data) => UrlModel.fromMap(data)).toList(growable: false);
+    return UrlModelList(urls: urlModels);
+  }
+
 }

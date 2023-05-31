@@ -1,11 +1,11 @@
 class CategoryModel {
   late final String uid;
   late final String title;
-  final String parent; //linked list
+  final String parent; // linked list
   final int icon;
   final int color;
   final int flag;
-  final String imageUrl; // Added imageUrl field
+  final String imageUrl;
   final int numItems;
 
   CategoryModel({
@@ -15,8 +15,8 @@ class CategoryModel {
     required this.icon,
     required this.color,
     required this.flag,
-    required this.imageUrl, // Added imageUrl parameter
-    required this.numItems, // Added numItems parameter
+    required this.imageUrl,
+    required this.numItems
   });
 
   Map<String, dynamic> toMap() {
@@ -27,8 +27,8 @@ class CategoryModel {
       'icon': icon,
       'color': color,
       'flag': flag,
-      'imageUrl': imageUrl, // Added imageUrl key-value pair
-      'numItems': numItems, // Added numItems key-value pair
+      'imageUrl': imageUrl,
+      'numItems': numItems,
     };
   }
 
