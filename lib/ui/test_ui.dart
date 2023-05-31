@@ -14,23 +14,24 @@ class StoredListScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          GetBuilder<StorageController>(
+          GetBuilder<StorageController>(//for the message on top
             init: _storageController,
             builder: (_) {
+              _storageController.restoreUrlModelList(); // Reload the stored data
               if (_storageController.isEmpty) {
                 _storageController.createAndStoreTestData(); // Create and store test data
-                _storageController.restoreUrlModelList(); // Reload the stored data
                 return Center(
                   child: Text('No data stored. Test data created.'),
                 );
               }
+              //_storageController.restoreUrlModelList(); // Reload the stored data
               return SizedBox.shrink();
             },
           ),
-          GetBuilder<StorageController>(
+          GetBuilder<StorageController>(//for the list
             init: _storageController,
             builder: (_) {
-              if (!_storageController.isDataLoaded.value) {
+              if (_storageController.isEmpty) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
