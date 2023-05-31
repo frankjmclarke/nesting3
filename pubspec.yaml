@@ -19,13 +19,14 @@ dependencies:
 
   # google_sign_in:
   # apple_sign_in:
+
+  webview_flutter: ^4.2.1
   get: ^4.6.5
   get_storage: ^2.1.1
   receive_sharing_intent: ^1.4.5
   crypto: ^3.0.3
   http: ^0.13.6
   csv: ^5.0.2
-  webview_flutter: ^4.2.1
   html: ^0.15.3
   flutter_dotenv: ^5.0.0
   introduction_slider: ^2.0.1

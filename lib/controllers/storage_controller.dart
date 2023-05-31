@@ -55,24 +55,27 @@ class StorageController extends GetxController {
     return _urlModelList;
   }
 
+  void empty() {
+    _urlModelList.value = UrlModelList(urls: []);
+  }
   /////////////TEST////////////////
   void createAndStoreTestData() {
     // Create test UrlModel objects
     UrlModel urlModel1 = UrlModel(
       uid: '1',
       email: 'test1@example.com',
-      name: 'Test 1',
-      url: 'https://example.com/test1',
-      imageUrl: 'https://example.com/images/test1.jpg',
+      name: 'Gibson Les Paul Cherry Sunburst Classic',
+      url: 'https://vancouver.craigslist.org/rds/msg/d/white-rock-gibson-les-paul-cherry/7625381420.html',
+      imageUrl: 'https://images.craigslist.org/00404_a72iXCulVC_0CI0t2_600x450.jpg',
       address: 'Test Address 1',
       quality: 5,
       distance: 10,
       value: 8,
       size: 500,
-      note: 'Test Note 1',
+      note: 'White Rock',
       features: 'Test Features 1',
       phoneNumber: '1234567890',
-      price: '10 USD',
+      price: '2,100',
       category: 'Test Category 1',
     );
 
@@ -81,7 +84,7 @@ class StorageController extends GetxController {
       email: 'test2@example.com',
       name: 'Test 2',
       url: 'https://example.com/test2',
-      imageUrl: 'https://example.com/images/test2.jpg',
+      imageUrl: 'https://images.craigslist.org/00x0x_4Mxosrb1GCh_0CI0t2_600x450.jpg',
       address: 'Test Address 2',
       quality: 3,
       distance: 15,
@@ -97,9 +100,9 @@ class StorageController extends GetxController {
     UrlModel urlModel3 = UrlModel(
       uid: '3',
       email: 'test3@example.com',
-      name: 'Test 3',
-      url: 'https://example.com/test3',
-      imageUrl: 'https://example.com/images/test3.jpg',
+      name: 'flutter',
+      url: 'https://flutter.dev',
+      imageUrl: 'https://images.craigslist.org/01212_f3nNBSut0MV_0CI0t2_600x450.jpg',
       address: 'Test Address 3',
       quality: 4,
       distance: 20,
