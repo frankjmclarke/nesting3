@@ -11,6 +11,15 @@ class StoredListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Stored List'),
+        leading: Icon(Icons.delete),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit), // Second icon
+            onPressed: () {
+              // Add your onPressed logic here
+            },
+          ),
+        ],// Add your desired icon here
       ),
       body: Column(
         children: [
@@ -79,7 +88,8 @@ class _CardItemState extends State<CardItem> {
             onTap: () {
               setState(() {
                 for (int i = 0; i < selectedList.length; i++) {
-                  selectedList[i].value = i == index;
+                 // selectedList[i].value = i == index;
+                  selectedList[index].toggle();
                 }
               });
             },
@@ -117,23 +127,7 @@ class _CardItemState extends State<CardItem> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        // Handle delete action
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      onPressed: () {
-                        // Handle edit action
-                      },
-                    ),
-                  ],
-                ),
+
               ),
             ),
           );
