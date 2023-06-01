@@ -14,14 +14,6 @@ class StoredListUI extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Stored List'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit), // Second icon
-            onPressed: () {
-              // Add your onPressed logic here
-            },
-          ),
-        ], // Add your desired icon here
       ),
       body: Column(
         children: [
@@ -82,13 +74,48 @@ class _CardItemState extends State<CardItem> {
     );
   }
 
-  void _editUrlModel(UrlModel urlModel) {
-    Get.to(//SHOP
-        () => WebviewUI(urlModel: urlModel, urlController: urlController));
+  void _editUrlModel(UrlModel urlModel) {//SHOP
+    Get.to(() => WebviewUI(urlModel: urlModel, urlController: urlController));
+  }
+
+  Future<void> _deleteUrlModel(int index) async {
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete this item?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmDelete == true) {
+      widget.storageController.delete(index);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+    double min = 95;
+    var max = screenHeight / 6;
+    if (max < min) {
+      max = min;
+    }
     return Expanded(
       child: ListView.builder(
         itemCount: widget.storageController.length,
@@ -97,42 +124,78 @@ class _CardItemState extends State<CardItem> {
           return InkWell(
             onTap: () {
               setState(() {
-                _editUrlModel(urlModel);
+               // _editUrlModel(urlModel);
               });
             },
-            child: Card(
-              color: selectedList[index].value ? Colors.blue : null,
-              child: ListTile(
-                leading: SizedBox(
-                  height: 96,
-                  width: 96.0, // Set the width equal to the height of the card
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(4.0),
-                      // Adjust the border radius as needed
-                      bottomLeft: Radius.circular(4.0),
-                    ),
-                    child: Image.network(
-                      urlModel.imageUrl,
-                      fit: BoxFit.cover, // Crop and center the image
-                      errorBuilder: (context, error, stackTrace) {
-                        // Handle image loading error
-                        return Center(
-                          child: Text('Image not found'),
-                        );
-                      },
-                    ),
-                  ),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.94,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0.0),
                 ),
-                title: Text(
-                  urlModel.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(
-                  urlModel.address,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                color: Colors.white70,
+                elevation: 10,
+                child: Stack(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.28,
+                              maxHeight: MediaQuery.of(context).size.width * 0.28,
+                            ),
+                            child: Image.network(
+                              urlModel.imageUrl,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  urlModel.name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  urlModel.note,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 5.0,
+                      right: 5.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          _editUrlModel(urlModel);
+                        },
+                        child: Icon(
+                          Icons.chevron_right,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

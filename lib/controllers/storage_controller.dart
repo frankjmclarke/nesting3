@@ -60,6 +60,7 @@ class StorageController extends GetxController {
       urlModelList?.urls.removeAt(index);
     });
     storeUrlModelList(_urlModelList.value);
+    update(); // Notify listeners of the changes
   }
 
   void empty() {
@@ -103,9 +104,60 @@ class StorageController extends GetxController {
       price: '20 USD',
       category: 'Test Category 2',
     );
-
     UrlModel urlModel3 = UrlModel(
       uid: '3',
+      email: 'test2@example.com',
+      name: 'Test 2',
+      url: 'https://example.com/test2',
+      imageUrl: 'https://images.craigslist.org/00x0x_4Mxosrb1GCh_0CI0t2_600x450.jpg',
+      address: 'Test Address 2',
+      quality: 3,
+      distance: 15,
+      value: 6,
+      size: 250,
+      note: 'Test Note 2',
+      features: 'Test Features 2',
+      phoneNumber: '9876543210',
+      price: '20 USD',
+      category: 'Test Category 2',
+    );
+    UrlModel urlModel4 = UrlModel(
+      uid: '4',
+      email: 'test2@example.com',
+      name: 'Test 2',
+      url: 'https://example.com/test2',
+      imageUrl: 'https://images.craigslist.org/00x0x_4Mxosrb1GCh_0CI0t2_600x450.jpg',
+      address: 'Test Address 2',
+      quality: 3,
+      distance: 15,
+      value: 6,
+      size: 250,
+      note: 'Test Note 2',
+      features: 'Test Features 2',
+      phoneNumber: '9876543210',
+      price: '20 USD',
+      category: 'Test Category 2',
+    );
+    UrlModel urlModel5 = UrlModel(
+      uid: '5',
+      email: 'test2@example.com',
+      name: 'Test 2',
+      url: 'https://example.com/test2',
+      imageUrl: 'https://images.craigslist.org/00x0x_4Mxosrb1GCh_0CI0t2_600x450.jpg',
+      address: 'Test Address 2',
+      quality: 3,
+      distance: 15,
+      value: 6,
+      size: 250,
+      note: 'Test Note 2',
+      features: 'Test Features 2',
+      phoneNumber: '9876543210',
+      price: '20 USD',
+      category: 'Test Category 2',
+    );
+
+    UrlModel urlModel6 = UrlModel(
+      uid: '6',
       email: 'test3@example.com',
       name: 'flutter',
       url: 'https://flutter.dev',
@@ -123,7 +175,7 @@ class StorageController extends GetxController {
     );
 
     // Create UrlModelList with test data
-    UrlModelList testDataList = UrlModelList(urls: [urlModel1, urlModel2, urlModel3]);
+    UrlModelList testDataList = UrlModelList(urls: [urlModel1, urlModel2, urlModel3, urlModel4, urlModel5, urlModel6]);
 
     // Store the UrlModelList
     storeUrlModelList(testDataList);
