@@ -55,6 +55,13 @@ class StorageController extends GetxController {
     return _urlModelList;
   }
 
+  void delete(int index) {
+    _urlModelList.update((urlModelList) {
+      urlModelList?.urls.removeAt(index);
+    });
+    storeUrlModelList(_urlModelList.value);
+  }
+
   void empty() {
     _urlModelList.value = UrlModelList(urls: []);
   }

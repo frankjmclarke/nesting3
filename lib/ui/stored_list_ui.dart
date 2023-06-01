@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/ui/edit_url_shop_ui.dart';
+import 'package:flutter_starter/ui/webview_ui.dart';
 import 'package:get/get.dart';
 import 'package:flutter_starter/controllers/storage_controller.dart';
 import 'package:flutter_starter/models/url_model.dart';
@@ -14,7 +14,6 @@ class StoredListUI extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Stored List'),
-        leading: Icon(Icons.delete),
         actions: [
           IconButton(
             icon: Icon(Icons.edit), // Second icon
@@ -85,7 +84,7 @@ class _CardItemState extends State<CardItem> {
 
   void _editUrlModel(UrlModel urlModel) {
     Get.to(//SHOP
-        () => EditUrlShopUI(urlModel: urlModel, urlController: urlController));
+        () => WebviewUI(urlModel: urlModel, urlController: urlController));
   }
 
   @override
@@ -98,10 +97,6 @@ class _CardItemState extends State<CardItem> {
           return InkWell(
             onTap: () {
               setState(() {
-                for (int i = 0; i < selectedList.length; i++) {
-                  // selectedList[i].value = i == index;
-                  // selectedList[index].toggle();
-                }
                 _editUrlModel(urlModel);
               });
             },
