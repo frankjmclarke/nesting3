@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 import '../controllers/category_controller.dart';
 import '../controllers/url_controller.dart';
 import '../models/url_model.dart';
@@ -49,11 +50,11 @@ class _EditTextUIState extends State<EditTextUI> {
       // Load the URL
       final uri = Uri.parse(widget.urlModel.url);
       //if (uri.scheme != null && uri.host != null) {
-        controller.loadRequest(uri);
-        print("!!!!!!!!!!!!!" + widget.urlModel.url);
-     // } else {
-     //   throw Exception('Invalid URL');
-    //  }
+      controller.loadRequest(uri);
+      print("!!!!!!!!!!!!!" + widget.urlModel.url);
+      // } else {
+      //   throw Exception('Invalid URL');
+      //  }
     } catch (e) {
       print('Error loading URL: $e');
       // Handle the error (e.g., show an error message)
@@ -107,7 +108,7 @@ class _EditTextUIState extends State<EditTextUI> {
       category: cat != null ? cat : '',
     );
     if (widget.urlController.saveChanges(updatedUrlModel)) {
-      Get.back();
+      //  Get.back();
     }
   }
 
@@ -127,7 +128,7 @@ class _EditTextUIState extends State<EditTextUI> {
     final category = categoryList.firstWhere(
         (category) => category['title'] == aname,
         orElse: () => createEmptyMap());
-    return  category['uid'];
+    return category['uid'];
   }
 
   @override
@@ -135,6 +136,20 @@ class _EditTextUIState extends State<EditTextUI> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Text'),
+  /*      actions: [
+          IconButton(
+            icon: Icon(Icons.save_alt),
+            onPressed: () {
+              _saveChanges().then((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Changes saved'),
+                  ),
+                );
+              });
+            },
+          ),
+        ],*/
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,14 +157,15 @@ class _EditTextUIState extends State<EditTextUI> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding:  EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(4.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    InputText(text: 'Name:', controller: _nameController),
+                    InputText(text: 'Note:', controller: _noteController),
                     InputText(text: 'Price:', controller: _priceController),
                     InputText(text: 'Phone:', controller: _phoneController),
                     InputText(text: 'Email:', controller: _emailController),
-                    InputText(text: 'Name:', controller: _nameController),
                     InputText(text: 'Address:', controller: _addressController),
                     Text(
                       'Category:',
@@ -165,7 +181,7 @@ class _EditTextUIState extends State<EditTextUI> {
                         });
                       },
                       items: categoryList.map<DropdownMenuItem<String>>(
-                            (Map<String, String> category) {
+                        (Map<String, String> category) {
                           return DropdownMenuItem<String>(
                             value: category['title']!,
                             child: Text(
@@ -178,17 +194,24 @@ class _EditTextUIState extends State<EditTextUI> {
                         },
                       ).toList(),
                     ),
-                    SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: _saveChanges,
-                      child: Text('Save Changes'),
-                    ),
                   ],
                 ),
               ),
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _saveChanges().then((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Changes saved'),
+              ),
+            );
+          });
+        },
+        child: Icon(Icons.save_alt),
       ),
     );
   }
@@ -212,12 +235,10 @@ class MyText extends StatelessWidget {
             ),
           ),
         ),
-
       ],
     );
   }
 }
-
 
 class InputText extends StatelessWidget {
   final String text;
@@ -242,5 +263,3 @@ class InputText extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_starter/ui/webview_ui.dart';
-import 'package:get/get.dart';
 import 'package:flutter_starter/controllers/storage_controller.dart';
 import 'package:flutter_starter/models/url_model.dart';
+import 'package:flutter_starter/ui/webview_ui.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+
 import '../controllers/url_controller.dart';
 
 class StoredListUI extends StatelessWidget {
@@ -74,7 +75,8 @@ class _CardItemState extends State<CardItem> {
     );
   }
 
-  void _editUrlModel(UrlModel urlModel) {//SHOP
+  void _editUrlModel(UrlModel urlModel) {
+    //SHOP
     Get.to(() => WebviewUI(urlModel: urlModel, urlController: urlController));
   }
 
@@ -124,7 +126,7 @@ class _CardItemState extends State<CardItem> {
           return InkWell(
             onTap: () {
               setState(() {
-               _editUrlModel(urlModel);
+                _editUrlModel(urlModel);
               });
             },
             child: Container(
@@ -144,8 +146,10 @@ class _CardItemState extends State<CardItem> {
                           padding: const EdgeInsets.all(2.0),
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
-                              maxWidth: 33.w,//MediaQuery.of(context).size.width * 0.28,
-                              maxHeight: 33.h,//MediaQuery.of(context).size.width * 0.28,
+                              maxWidth: 33.w,
+                              //MediaQuery.of(context).size.width * 0.28,
+                              maxHeight: 33
+                                  .h, //MediaQuery.of(context).size.width * 0.28,
                             ),
                             child: Image.network(
                               urlModel.imageUrl,
@@ -190,7 +194,7 @@ class _CardItemState extends State<CardItem> {
                           _deleteUrlModel(index);
                         },
                         child: Icon(
-                          Icons.delete,//chevron_right
+                          Icons.delete, //chevron_right
                           color: Colors.black87,
                         ),
                       ),
