@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'components/avatar.dart';
 import 'components/form_vertical_spacing.dart';
 
@@ -19,7 +20,7 @@ class HomeMenuUI extends StatelessWidget {
             body: Center(
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 120),
+                  SizedBox(height: 10.h),
                   Avatar(controller.firestoreUser.value!),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -30,28 +31,28 @@ class HomeMenuUI extends StatelessWidget {
                         'home.uidLabel'.tr +
                             ': ' +
                             controller.firestoreUser.value!.uid,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16.sp),
                       ),
                       FormVerticalSpace(),
                       Text(
                         'home.nameLabel'.tr +
                             ': ' +
                             controller.firestoreUser.value!.name,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16.sp),
                       ),
                       FormVerticalSpace(),
                       Text(
                         'home.emailLabel'.tr +
                             ': ' +
                             controller.firestoreUser.value!.email,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16.sp),
                       ),
                       FormVerticalSpace(),
                       Text(
                         'home.adminUserLabel'.tr +
                             ': ' +
                             controller.admin.value.toString(),
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16.sp),
                       ),
                     ],
                   ),

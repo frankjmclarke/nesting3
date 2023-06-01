@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_starter/ui/url_list_ui.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import '../controllers/category_controller.dart';
 import '../controllers/url_controller.dart';
 import '../models/category_model.dart';
@@ -74,7 +75,7 @@ class CategoryPickUI extends StatelessWidget {
       background: Container(
         color: Colors.red,
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 16.0),
+        padding: EdgeInsets.only(right: 4.w),
         child: Icon(
           Icons.delete,
           color: Colors.white,
@@ -108,8 +109,8 @@ class CategoryPickUI extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              height: 96,
-              width: 96.0, // Set the width equal to the height of the card
+              height: 20.h,
+              width: 20.w, // Set the width equal to the height of the card
               child: ClipRRect(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(4.0), // Adjust the border radius as needed
@@ -134,11 +135,19 @@ class CategoryPickUI extends StatelessWidget {
                   catModel.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                  ),
                 ),
                 subtitle: Text(
                   catModel.numItems.toString(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp,
+                  ),
                 ),/*
                 trailing: IconButton(
                   icon: Icon(Icons.edit),

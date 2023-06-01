@@ -3,8 +3,8 @@ import 'package:flutter_starter/ui/webview_ui.dart';
 import 'package:get/get.dart';
 import 'package:flutter_starter/controllers/storage_controller.dart';
 import 'package:flutter_starter/models/url_model.dart';
+import 'package:sizer/sizer.dart';
 import '../controllers/url_controller.dart';
-import 'edit_url_ui.dart';
 
 class StoredListUI extends StatelessWidget {
   final StorageController _storageController = Get.find<StorageController>();
@@ -111,7 +111,7 @@ class _CardItemState extends State<CardItem> {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
-    double min = 95;
+    double min = 95.h;
     var max = screenHeight / 6;
     if (max < min) {
       max = min;
@@ -144,8 +144,8 @@ class _CardItemState extends State<CardItem> {
                           padding: const EdgeInsets.all(2.0),
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width * 0.28,
-                              maxHeight: MediaQuery.of(context).size.width * 0.28,
+                              maxWidth: 33.w,//MediaQuery.of(context).size.width * 0.28,
+                              maxHeight: 33.h,//MediaQuery.of(context).size.width * 0.28,
                             ),
                             child: Image.network(
                               urlModel.imageUrl,
@@ -163,7 +163,7 @@ class _CardItemState extends State<CardItem> {
                                   urlModel.name,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 18.sp,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -171,7 +171,7 @@ class _CardItemState extends State<CardItem> {
                                 Text(
                                   urlModel.note,
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 12.sp,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,

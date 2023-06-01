@@ -30,6 +30,8 @@ dependencies:
   html: ^0.15.3
   flutter_dotenv: ^5.0.0
   introduction_slider: ^2.0.1
+  sizer: ^2.0.15
+  device_preview: ^1.1.0
 
 dependency_overrides:
   # analyzer: 1.4.0
