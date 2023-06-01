@@ -56,13 +56,7 @@ class _WebviewUIState extends State<WebviewUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Stored List'),
-        leading: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            deleteItem(0);
-          },
-        ),
+        title: Text('Web View'),
         actions: [
           IconButton(
             icon: Icon(Icons.edit),

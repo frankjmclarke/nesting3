@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../controllers/category_controller.dart';
 import '../controllers/url_controller.dart';
@@ -47,12 +48,12 @@ class _EditTextUIState extends State<EditTextUI> {
 
       // Load the URL
       final uri = Uri.parse(widget.urlModel.url);
-      if (uri.scheme != null && uri.host != null) {
+      //if (uri.scheme != null && uri.host != null) {
         controller.loadRequest(uri);
-        print("!!!!!!!!!!!!!" +widget.urlModel.url);
-      } else {
-        throw Exception('Invalid URL');
-      }
+        print("!!!!!!!!!!!!!" + widget.urlModel.url);
+     // } else {
+     //   throw Exception('Invalid URL');
+    //  }
     } catch (e) {
       print('Error loading URL: $e');
       // Handle the error (e.g., show an error message)
@@ -66,9 +67,9 @@ class _EditTextUIState extends State<EditTextUI> {
     _priceController.addListener(_onUrlChanged);
 
     categoryList = CategoryController.to.getCategories();
-    selectedCategory = (categoryList.isNotEmpty ? categoryList[0]['title']! : null)!;
+    selectedCategory =
+        (categoryList.isNotEmpty ? categoryList[0]['title']! : null)!;
   }
-
 
   @override
   void dispose() {
@@ -82,6 +83,7 @@ class _EditTextUIState extends State<EditTextUI> {
       //  controller.loadRequest(_urlController.text as Uri);
     });
   }
+
   List<String> canceledFields = [];
 
   Future<void> _saveChanges() async {
@@ -110,7 +112,8 @@ class _EditTextUIState extends State<EditTextUI> {
   }
 
   String? getValueFromKey(String key) {
-    Map<String, String>? map = categoryList.firstWhereOrNull((map) => map.containsKey(key));
+    Map<String, String>? map =
+        categoryList.firstWhereOrNull((map) => map.containsKey(key));
     return map != null ? map[key] : null;
   }
 
@@ -121,15 +124,17 @@ class _EditTextUIState extends State<EditTextUI> {
   }
 
   String? getUidFromName(String aname) {
-    final category = categoryList.firstWhere((category) => category['title'] == aname, orElse: () => createEmptyMap());
-    return category != null ? category['uid'] : null;
+    final category = categoryList.firstWhere(
+        (category) => category['title'] == aname,
+        orElse: () => createEmptyMap());
+    return  category['uid'];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Url'),
+        title: Text('Edit Text'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,34 +142,21 @@ class _EditTextUIState extends State<EditTextUI> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding:  EdgeInsets.all(4.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Price:'),
-                    TextFormField(
-                      controller: _priceController,
+                    InputText(text: 'Price:', controller: _priceController),
+                    InputText(text: 'Phone:', controller: _phoneController),
+                    InputText(text: 'Email:', controller: _emailController),
+                    InputText(text: 'Name:', controller: _nameController),
+                    InputText(text: 'Address:', controller: _addressController),
+                    Text(
+                      'Category:',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                      ),
                     ),
-                    SizedBox(height: 16.0),
-                    Text('Phone:'),
-                    TextFormField(
-                      controller: _phoneController,
-                    ),
-                    SizedBox(height: 16.0),
-                    Text('Email:'),
-                    TextFormField(
-                      controller: _emailController,
-                    ),
-                    Text('Name:'),
-                    TextFormField(
-                      controller: _nameController,
-                    ),
-                    Text('Address:'),
-                    TextFormField(
-                      controller: _addressController,
-                    ),
-                    SizedBox(height: 16.0),
-                    Text('Category:'),
                     DropdownButton<String>(
                       value: selectedCategory,
                       onChanged: (String? newValue) {
@@ -172,12 +164,19 @@ class _EditTextUIState extends State<EditTextUI> {
                           selectedCategory = newValue!;
                         });
                       },
-                      items: categoryList.map<DropdownMenuItem<String>>((Map<String, String> category) {
-                        return DropdownMenuItem<String>(
-                          value: category['title']!,
-                          child: Text(category['title']!),
-                        );
-                      }).toList(),
+                      items: categoryList.map<DropdownMenuItem<String>>(
+                            (Map<String, String> category) {
+                          return DropdownMenuItem<String>(
+                            value: category['title']!,
+                            child: Text(
+                              category['title']!,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
                     ),
                     SizedBox(height: 16.0),
                     ElevatedButton(
@@ -194,3 +193,54 @@ class _EditTextUIState extends State<EditTextUI> {
     );
   }
 }
+
+class MyText extends StatelessWidget {
+  final String text;
+
+  const MyText({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 3.h,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 12.sp,
+            ),
+          ),
+        ),
+
+      ],
+    );
+  }
+}
+
+
+class InputText extends StatelessWidget {
+  final String text;
+  final TextEditingController controller;
+
+  const InputText({
+    required this.text,
+    required this.controller,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MyText(text: text),
+        TextFormField(
+          controller: controller,
+        ),
+        SizedBox(height: 2.h),
+      ],
+    );
+  }
+}
+
+

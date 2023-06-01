@@ -124,7 +124,7 @@ class _CardItemState extends State<CardItem> {
           return InkWell(
             onTap: () {
               setState(() {
-               // _editUrlModel(urlModel);
+               _editUrlModel(urlModel);
               });
             },
             child: Container(
@@ -187,11 +187,11 @@ class _CardItemState extends State<CardItem> {
                       right: 5.0,
                       child: GestureDetector(
                         onTap: () {
-                          _editUrlModel(urlModel);
+                          _deleteUrlModel(index);
                         },
                         child: Icon(
-                          Icons.chevron_right,
-                          color: Colors.black,
+                          Icons.delete,//chevron_right
+                          color: Colors.black87,
                         ),
                       ),
                     ),
