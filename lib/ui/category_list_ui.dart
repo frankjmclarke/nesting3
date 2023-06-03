@@ -122,7 +122,7 @@ class CategoryListUI extends StatelessWidget {
               child: ListTile(
                 onTap:  () {
                   categoryController.uidCurrent = catModel.uid;
-                  Get.to(() => StoredListUI());//Get.to(() => UrlListUI())
+                  Get.to(() => UrlListUI());//Get.to(() => UrlListUI())  StoredListUI
                 },
                 title: Text(
                   catModel.title,

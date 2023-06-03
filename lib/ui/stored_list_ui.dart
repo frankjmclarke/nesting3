@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../controllers/url_controller.dart';
+import 'components/url_list_item.dart';
 
 class StoredListUI extends StatelessWidget {
   final StorageController _storageController = Get.find<StorageController>();
@@ -123,86 +124,11 @@ class _CardItemState extends State<CardItem> {
         itemCount: widget.storageController.length,
         itemBuilder: (context, index) {
           UrlModel urlModel = widget.storageController.urlModelList.urls[index];
-          return InkWell(
-            onTap: () {
-              setState(() {
-                _editUrlModel(urlModel);
-              });
-            },
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.94,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.0),
-                ),
-                color: Colors.white70,
-                elevation: 10,
-                child: Stack(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxWidth: 33.w,
-                              //MediaQuery.of(context).size.width * 0.28,
-                              maxHeight: 33
-                                  .h, //MediaQuery.of(context).size.width * 0.28,
-                            ),
-                            child: Image.network(
-                              urlModel.imageUrl,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  urlModel.name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.sp,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  urlModel.note,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 5.0,
-                      right: 5.0,
-                      child: GestureDetector(
-                        onTap: () {
-                          _deleteUrlModel(index);
-                        },
-                        child: Icon(
-                          Icons.delete, //chevron_right
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          return UrlListItem(
+            urlModel: urlModel,
+            index: index,
+            onEdit: _editUrlModel,
+            onDelete: _deleteUrlModel,
           );
         },
       ),

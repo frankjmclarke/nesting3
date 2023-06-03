@@ -1,15 +1,17 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_starter/ui/onboarding/onboarding.dart';
-import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:flutter_starter/models/models.dart';
 import 'package:flutter_starter/ui/auth/auth.dart';
-import 'package:flutter_starter/ui/ui.dart';
 import 'package:flutter_starter/ui/components/components.dart';
-import 'package:flutter_starter/helpers/helpers.dart';
+import 'package:flutter_starter/ui/onboarding/onboarding.dart';
+import 'package:get/get.dart';
+
+import '../ui/home_ui.dart';
+
 //our user and authentication functions for creating, logging in and out our
 // user and saving our user data.
 class AuthController extends GetxController {
@@ -25,11 +27,16 @@ class AuthController extends GetxController {
 
   @override
   void onReady() async {
-    //run every time auth state changes
+//It sets up an authentication state change listener, which triggers
+// the handleAuthChanged method whenever the firebaseUser value changes.
     ever(firebaseUser, handleAuthChanged);
 
+// allows you to receive real-time updates of the authentication state changes
     firebaseUser.bindStream(user);
-
+// By binding the stream to the user property, you can access the user's authentication
+// state and perform actions such as displaying different screens based on whether the user
+// is logged in or not, updating the UI based on the user's profile information, or triggering
+// specific logic based on the user's authentication status.
     super.onReady();
   }
 
@@ -52,14 +59,14 @@ class AuthController extends GetxController {
       print('Send to signin');
       Get.offAll(SignInUI());
     } else {
-      Get.offAll(HomeUI());//HomeUI OnboardingUI()
+      Get.offAll(HomeUI()); //HomeUI OnboardingUI()
     }
   }
 
   // Firebase user one-time fetch
   Future<User> get getUser async => _auth.currentUser!;
 
-  // Firebase user a realtime stream
+  // emit null when the user is not authenticated and emit the authenticated user object when the user is logged in.
   Stream<User?> get user => _auth.authStateChanges();
 
   //Streams the firestore user from the firestore collection

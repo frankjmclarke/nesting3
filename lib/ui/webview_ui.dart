@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 import '../controllers/storage_controller.dart';
 import '../controllers/url_controller.dart';
 import '../models/url_model.dart';
@@ -21,6 +21,8 @@ class _WebviewUIState extends State<WebviewUI> {
   late final WebViewController _webViewController;
   final StorageController _storageController = Get.find<StorageController>();
   var loadingPercentage = 0;
+  var title;
+  var scrollPosition;
 
   void initState() {
     super.initState();
@@ -29,6 +31,18 @@ class _WebviewUIState extends State<WebviewUI> {
       ..loadRequest(
         Uri.parse(widget.urlModel.url),
       );
+    NavigationDelegate(
+      onProgress: (int progress) {
+        _webViewController.scrollBy(140,  499);
+      },
+      onPageStarted: (String url) {},
+      onPageFinished: (String url) {
+        title = _webViewController.getTitle();
+        scrollPosition = _webViewController.getScrollPosition();
+        _webViewController.scrollTo(140, scrollPosition + 499);
+      },
+      onWebResourceError: (WebResourceError error) {},
+    );
   }
 
   @override
@@ -48,8 +62,9 @@ class _WebviewUIState extends State<WebviewUI> {
     _storageController.delete(index);
   }
 
-  void editItem(UrlModel url){
-    Get.to(() =>EditTextUI( urlModel: url, urlController: widget.urlController));
+  void editItem(UrlModel url) {
+    Get.to(
+        () => EditTextUI(urlModel: url, urlController: widget.urlController));
   }
 
   @override

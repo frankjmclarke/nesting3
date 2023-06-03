@@ -29,13 +29,13 @@ class _HomeUIState extends State<HomeUI> {
 
   void startTimeout() {
     // Wait for 5 seconds, then set isLoading to false
-    Future.delayed(Duration(seconds: 5), () {
+   // Future.delayed(Duration(seconds: 1), () {
       if (mounted) {
-        setState(() {
+        setState(() {//the widget is currently in the widget tree.
           isLoading = false;
         });
       }
-    });
+    //});
   }
 
   @override
@@ -45,7 +45,9 @@ class _HomeUIState extends State<HomeUI> {
       builder: (controller) {
         if (isLoading || controller.firestoreUser.value?.uid == null) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: Colors.yellow, // lasts about 2 seconds
+            ),
           );
         } else {
           return Scaffold(

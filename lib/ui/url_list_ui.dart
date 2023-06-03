@@ -3,6 +3,7 @@ import 'package:flutter_starter/controllers/category_controller.dart';
 import 'package:get/get.dart';
 import '../controllers/url_controller.dart';
 import '../models/url_model.dart';
+import 'components/place_holder.dart';
 import 'edit_url_ui.dart';
 
 class UrlListUI extends StatelessWidget {
@@ -122,6 +123,12 @@ class UrlListUI extends StatelessWidget {
                 child: Image.network(
                   imageUrl,
                   fit: BoxFit.cover, // Crop and center the image
+                  errorBuilder: (context, error, stackTrace) {
+                    // Handle the NetworkImageLoadException here
+                    print('Image load failed: $error');
+                    // Return a placeholder widget or a fallback image
+                    return PlaceholderWidget(); // Replace with your desired widget
+                  },
                 ),
               ),
             ),
@@ -160,3 +167,5 @@ class UrlListUI extends StatelessWidget {
         () => EditUrlScreen(urlModel: urlModel, urlController: urlController));
   }
 }
+
+
