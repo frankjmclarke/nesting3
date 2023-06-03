@@ -7,6 +7,7 @@ import '../controllers/url_controller.dart';
 import '../helpers/canada_address.dart';
 import '../helpers/maps.dart';
 import '../models/url_model.dart';
+import 'components/input_text.dart';
 
 class EditUrlScreen extends StatefulWidget {
   final UrlModel urlModel;
@@ -163,6 +164,7 @@ class _EditUrlScreenState extends State<EditUrlScreen> {
       Get.back();
     }
   }
+
   String? getValueFromKey(String key) {
     Map<String, String>? map = categoryList.firstWhereOrNull((map) => map.containsKey(key));
     return map != null ? map[key] : null;
@@ -178,7 +180,6 @@ class _EditUrlScreenState extends State<EditUrlScreen> {
     final category = categoryList.firstWhere((category) => category['title'] == aname, orElse: () => createEmptyMap());
     return category != null ? category['uid'] : null;
   }
-
 
   Future<void> _showInputDialog(BuildContext context, String fieldName, TextEditingController controller) async {
     return showDialog(
@@ -245,30 +246,12 @@ class _EditUrlScreenState extends State<EditUrlScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Price:'),
-                    TextFormField(
-                      controller: _priceController,
-                    ),
-                    SizedBox(height: 16.0),
-                    Text('Phone:'),
-                    TextFormField(
-                      controller: _phoneController,
-                    ),
-                    SizedBox(height: 16.0),
-                    Text('Email:'),
-                    TextFormField(
-                      controller: _emailController,
-                    ),
-                    Text('Name:'),
-                    TextFormField(
-                      controller: _nameController,
-                    ),
-                    Text('Address:'),
-                    TextFormField(
-                      controller: _addressController,
-                    ),
-                    SizedBox(height: 16.0),
-                    Text('Category:'),
+                    InputText(text: 'Name:', controller: _nameController),
+                    InputText(text: 'Note:', controller: _noteController),
+                    InputText(text: 'Price:', controller: _priceController),
+                    InputText(text: 'Phone:', controller: _phoneController),
+                    InputText(text: 'Email:', controller: _emailController),
+                    InputText(text: 'Address:', controller: _addressController),
                     DropdownButton<String>(
                       value: selectedCategory,
                       onChanged: (String? newValue) {

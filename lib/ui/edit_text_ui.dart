@@ -6,6 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../controllers/category_controller.dart';
 import '../controllers/url_controller.dart';
 import '../models/url_model.dart';
+import 'components/input_text.dart';
 
 class EditTextUI extends StatefulWidget {
   final UrlModel urlModel;
@@ -235,30 +236,6 @@ class MyText extends StatelessWidget {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class InputText extends StatelessWidget {
-  final String text;
-  final TextEditingController controller;
-
-  const InputText({
-    required this.text,
-    required this.controller,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MyText(text: text),
-        TextFormField(
-          controller: controller,
-        ),
-        SizedBox(height: 2.h),
       ],
     );
   }

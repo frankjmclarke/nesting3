@@ -11,7 +11,7 @@ class HomeUI extends StatefulWidget {
 }
 
 class _HomeUIState extends State<HomeUI> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   bool isLoading = true;
 
   final List<Widget> _screens = [

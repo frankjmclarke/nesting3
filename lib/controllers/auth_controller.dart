@@ -7,7 +7,7 @@ import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:flutter_starter/models/models.dart';
 import 'package:flutter_starter/ui/auth/auth.dart';
 import 'package:flutter_starter/ui/components/components.dart';
-import 'package:flutter_starter/ui/onboarding/onboarding.dart';
+import 'package:flutter_starter/ui/ui.dart';
 import 'package:get/get.dart';
 
 import '../ui/home_ui.dart';
