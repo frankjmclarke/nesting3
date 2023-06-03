@@ -8,7 +8,7 @@ import '../ui/home_menu_ui.dart';
 class AppRoutes {
   AppRoutes._(); //this is to prevent anyone from instantiating this object
   static final routes = [//allows Get.to(SignUpUI()),
-    GetPage(name: '/', page: () => HomeUI()),//SplashUI
+    GetPage(name: '/', page: () => SplashUI()),//SplashUI
     GetPage(name: '/signin', page: () => SignInUI()),
     GetPage(name: '/signup', page: () => SignUpUI()),
     GetPage(name: '/home', page: () => HomeUI()),

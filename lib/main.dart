@@ -15,7 +15,7 @@ void main() async {
   await dotenv.load();
   await Firebase.initializeApp();
   await GetStorage.init();
-  Get.put<AuthController>(AuthController());//registers an instance of the AuthController class as a dependency, making it available for other parts of the application to use.
+  Get.put<AuthController>(AuthController());
   Get.put<ThemeController>(ThemeController());
   Get.put<LanguageController>(LanguageController());
   Get.put<StorageController>(StorageController());
@@ -36,10 +36,7 @@ class MyApp extends StatelessWidget {
               // FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
             ],
             debugShowCheckedModeBanner: false,
-            //defaultTransition: Transition.fade,
-            theme: AppThemes.lightTheme,
-            darkTheme: AppThemes.darkTheme,
-            themeMode: ThemeMode.system,
+            // Configure GetX navigation
             initialRoute: '/',
             getPages: AppRoutes.routes,
           ),
