@@ -148,7 +148,7 @@ class _EditUrlScreenState extends State<EditUrlScreen> {
       name: _nameController.text.trim(),
       url: widget.urlModel.url,
       imageUrl: widget.urlModel.imageUrl,
-      address: '',
+      address: _addressController.text.trim(),
       quality: 0,
       distance: 0,
       value: 0,
@@ -219,7 +219,21 @@ class _EditUrlScreenState extends State<EditUrlScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Url'),
+        title: Text('Edit Text'),
+             actions: [
+          IconButton(
+            icon: Icon(Icons.save_alt),
+            onPressed: () {
+              _saveChanges().then((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Changes saved'),
+                  ),
+                );
+              });
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,10 +284,6 @@ class _EditUrlScreenState extends State<EditUrlScreen> {
                       }).toList(),
                     ),
                     SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: _saveChanges,
-                      child: Text('Save Changes'),
-                    ),
                   ],
                 ),
               ),

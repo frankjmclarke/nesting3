@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../controllers/url_controller.dart';
 import '../models/url_model.dart';
 import 'components/place_holder.dart';
+import 'components/url_list_item.dart';
 import 'edit_url_ui.dart';
 
 class UrlListUI extends StatelessWidget {
@@ -20,7 +21,7 @@ class UrlListUI extends StatelessWidget {
         title: Text('List'),
       ),
       body: Obx(
-        () {
+            () {
           //Inside the Obx widget, the current value of urlController.firestoreUrlList is checked.
           // If it is null, a CircularProgressIndicator is displayed
           if (urlController.firestoreUrlList.value == null) {
@@ -28,8 +29,8 @@ class UrlListUI extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else {
-            final List<UrlModel> urls =
-                urlController.firestoreUrlList.value!.urls;
+            final List<UrlModel> urls = urlController.firestoreUrlList.value!
+                .urls;
             urlsOnLoad = urls.length;
 
             if (urls.isEmpty) {
@@ -38,12 +39,12 @@ class UrlListUI extends StatelessWidget {
               );
             } else {
               final filteredUrls = categoryController.uidCurrent ==
-                      '07hVeZyY2PM7VK8DC5QX'
+                  '07hVeZyY2PM7VK8DC5QX'
                   ? urls
                   : urls
-                      .where((urlModel) =>
-                          urlModel.category == categoryController.uidCurrent)
-                      .toList();
+                  .where((urlModel) =>
+              urlModel.category == categoryController.uidCurrent)
+                  .toList();
 
               if (filteredUrls.isEmpty) {
                 return Center(
@@ -53,8 +54,13 @@ class UrlListUI extends StatelessWidget {
                 return ListView.builder(
                   itemCount: filteredUrls.length,
                   itemBuilder: (context, index) {
-                    final urlModel = filteredUrls[index];
-                    return _buildUrlItem(urlModel);
+                    UrlModel urlModel = filteredUrls[index];
+                    return UrlListItem(
+                      urlModel: urlModel,
+                      index: index,
+                      onEdit: _editUrlModel,
+                      onDelete: () => _deleteUrlModel(urlModel),
+                    );
                   },
                 );
               }
@@ -156,6 +162,10 @@ class UrlListUI extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _deleteUrlModel(UrlModel urlModel) {
+    urlController.deleteUrl(urlModel);
   }
 
   void _updateCategoryTotal() {

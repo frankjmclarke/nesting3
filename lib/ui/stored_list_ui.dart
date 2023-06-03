@@ -81,33 +81,35 @@ class _CardItemState extends State<CardItem> {
     Get.to(() => WebviewUI(urlModel: urlModel, urlController: urlController));
   }
 
-  Future<void> _deleteUrlModel(int index) async {
-    bool confirmDelete = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this item?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Text('Delete'),
-            ),
-          ],
-        );
-      },
-    );
+  void _deleteUrlModel(int? index) async {
+    if (index != null) {
+      bool confirmDelete = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm Delete'),
+            content: Text('Are you sure you want to delete this item?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text('Delete'),
+              ),
+            ],
+          );
+        },
+      );
 
-    if (confirmDelete == true) {
-      widget.storageController.delete(index);
+      if (confirmDelete == true) {
+        widget.storageController.delete(index);
+      }
     }
   }
 
@@ -128,7 +130,7 @@ class _CardItemState extends State<CardItem> {
             urlModel: urlModel,
             index: index,
             onEdit: _editUrlModel,
-            onDelete: _deleteUrlModel,
+            onDelete: () => _deleteUrlModel(index),
           );
         },
       ),
