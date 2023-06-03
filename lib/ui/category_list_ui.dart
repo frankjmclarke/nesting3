@@ -18,13 +18,21 @@ class CategoryListUI extends StatelessWidget {
       //The Obx widget wraps the ListView.builder, and it observes the categories
       //list from the CategoryController. Whenever the categories list changes,
       //the ListView.builder is automatically rebuilt with the updated data.
-      body: Obx(() => ListView.builder(
-        itemCount: categoryController.firestoreCategoryList.value?.categories.length,
-        itemBuilder: (context, index) {
-          final CategoryModel? catModel = categoryController.firestoreCategoryList.value?.categories[index];
-          return _buildCategoryItem(catModel!);
-        },
-      )),
+      body: Obx(() {
+        final firestoreCategoryList = categoryController.firestoreCategoryList.value;
+        if (firestoreCategoryList == null) {
+          return CircularProgressIndicator(color:Colors.green);
+        } else {
+          return ListView.builder(
+            itemCount: firestoreCategoryList.categories.length,
+            itemBuilder: (context, index) {
+              final CategoryModel catModel = firestoreCategoryList.categories[index];
+              return _buildCategoryItem(catModel);
+            },
+          );
+        }
+      }),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(

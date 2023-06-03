@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:flutter_starter/ui/ui.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'category_list_ui.dart';
 import 'home_menu_ui.dart';
 
@@ -29,24 +30,44 @@ class _HomeUIState extends State<HomeUI> {
 
   void startTimeout() {
     // Wait for 5 seconds, then set isLoading to false
-   // Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 1), () {
       if (mounted) {
         setState(() {//the widget is currently in the widget tree.
           isLoading = false;
         });
       }
-    //});
+    });
   }
 
+  @override
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(
       init: AuthController(),
       builder: (controller) {
         if (isLoading || controller.firestoreUser.value?.uid == null) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.yellow, // lasts about 2 seconds
+          return Container(
+            color: Colors.white,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/ic_launcher.png',
+                    width: 35.h,
+                    height: 35.h,
+                  ),
+                  SizedBox(height: 2.h), // Add some spacing between the image and text
+                  Text(
+                    'Lining your nest...',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         } else {
@@ -79,4 +100,5 @@ class _HomeUIState extends State<HomeUI> {
       },
     );
   }
+
 }
