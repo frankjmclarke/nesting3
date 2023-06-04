@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:flutter_starter/ui/ui.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 import 'category_list_ui.dart';
+import 'components/centered_text.dart';
 import 'home_menu_ui.dart';
 
 class HomeUI extends StatefulWidget {
@@ -46,28 +46,10 @@ class _HomeUIState extends State<HomeUI> {
       init: AuthController(),
       builder: (controller) {
         if (isLoading || controller.firestoreUser.value?.uid == null) {
-          return Container(
-            color: Colors.white,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/ic_launcher.png',
-                    width: 35.h,
-                    height: 35.h,
-                  ),
-                  SizedBox(height: 2.h), // Add some spacing between the image and text
-                  Text(
-                    'Lining your nest...',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+          return Scaffold(
+            body: Container(
+              color: Colors.white,
+              child: CenteredText(text: 'Lining your nest...'),
             ),
           );
         } else {

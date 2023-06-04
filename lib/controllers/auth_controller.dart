@@ -9,7 +9,6 @@ import 'package:flutter_starter/ui/auth/auth.dart';
 import 'package:flutter_starter/ui/components/components.dart';
 import 'package:flutter_starter/ui/ui.dart';
 import 'package:get/get.dart';
-
 import '../ui/home_ui.dart';
 
 //our user and authentication functions for creating, logging in and out our
@@ -24,6 +23,7 @@ class AuthController extends GetxController {
   Rxn<User> firebaseUser = Rxn<User>();
   Rxn<UserModel> firestoreUser = Rxn<UserModel>();
   final RxBool admin = false.obs;
+  late UserModel _user;
 
   @override
   void onReady() async {
@@ -105,17 +105,14 @@ class AuthController extends GetxController {
     }
   }
 
-  // User registration using email and password
   registerWithEmailAndPassword(BuildContext context) async {
     showLoadingIndicator();
     try {
-      await _auth
-          .createUserWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
-          .then((result) async {
-        print('uID: ' + result.user!.uid.toString());
-        print('email: ' + result.user!.email.toString());
-        //get photo url from gravatar if user has one
+      await _auth.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      ).then((result) async {
+        // Get photo url from gravatar if user has one
         Gravatar gravatar = Gravatar(emailController.text);
         String gravatarUrl = gravatar.imageUrl(
           size: 200,
@@ -123,25 +120,31 @@ class AuthController extends GetxController {
           rating: GravatarRating.pg,
           fileExtension: true,
         );
-        //create the new user object
-        UserModel _newUser = UserModel(
-            uid: result.user!.uid,
-            email: result.user!.email!,
-            name: nameController.text,
-            photoUrl: gravatarUrl);
-        //create the user in firestore
-        _createUserFirestore(_newUser, result.user!);
+
+        // Create the new user object
+        _user = UserModel(
+          uid: result.user!.uid,
+          email: result.user!.email!,
+          name: nameController.text,
+          photoUrl: gravatarUrl, // Use the setter to update the photoUrl field
+        );
+
+        // Create the user in Firestore
+        _createUserFirestore(_user, result.user!);
         emailController.clear();
         passwordController.clear();
         hideLoadingIndicator();
       });
     } on FirebaseAuthException catch (error) {
       hideLoadingIndicator();
-      Get.snackbar('auth.signUpErrorTitle'.tr, error.message!,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 10),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+      Get.snackbar(
+        'auth.signUpErrorTitle'.tr,
+        error.message!,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 10),
+        backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+        colorText: Get.theme.snackBarTheme.actionTextColor,
+      );
     }
   }
 
@@ -158,7 +161,7 @@ class AuthController extends GetxController {
             .then((_firebaseUser) async {
           await _firebaseUser.user!
               .updateEmail(user.email)
-              .then((value) => _updateUserFirestore(user, _firebaseUser.user!));
+              .then((value) => updateUserFirestore(user, _firebaseUser.user!));
         });
       } catch (err) {
         print('Caught error: $err');
@@ -201,7 +204,7 @@ class AuthController extends GetxController {
   }
 
   //updates the firestore user in users collection
-  void _updateUserFirestore(UserModel user, User _firebaseUser) {
+  void updateUserFirestore(UserModel user, User _firebaseUser) {
     _db.doc('/users/${_firebaseUser.uid}').update(user.toJson());
     update();
   }
@@ -279,7 +282,7 @@ The streamFirestoreUser method retrieves the user data from Firestore by
 streaming the document corresponding to the authenticated user's UID.
 The getFirestoreUser method retrieves the user data from Firestore as a one-time fetch.
 The class also includes methods for updating the Firestore user document
-(_updateUserFirestore) and creating a new user document (_createUserFirestore).
+(updateUserFirestore) and creating a new user document (_createUserFirestore).
 The isAdmin method checks if the current user has admin privileges by querying the admin collection in Firestore.
 The signOut method handles the sign-out process.
 Overall, this code provides a foundation for managing user authentication and

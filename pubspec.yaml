@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   firebase_core: ^2.13.0
+  firebase_storage: ^11.2.2
   # firebase_analytics: ^7.1.1 no nullsafe... skip it for now
   firebase_auth: ^4.6.1
   cloud_firestore: ^4.7.1
@@ -32,6 +33,8 @@ dependencies:
   introduction_slider: ^2.0.1
   sizer: ^2.0.15
   device_preview: ^1.1.0
+  image_picker: ^0.8.7+5
+  flutter_image_compress: ^1.0.0
 
 dependency_overrides:
   # analyzer: 1.4.0
