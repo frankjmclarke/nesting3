@@ -252,7 +252,7 @@ class UrlController extends GetxController {
   }
 
   bool saveChanges(UrlModel updatedUrlModel) {
-    if (updatedUrlModel.name.isEmpty || updatedUrlModel.url.isEmpty) {
+    if ( updatedUrlModel.url.isEmpty) {
       // Display an error message or show a snackbar indicating missing fields
       return false;
     }
