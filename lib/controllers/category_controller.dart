@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_starter/controllers/url_controller.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../helpers/string_util.dart';
@@ -16,6 +16,7 @@ class CategoryController extends GetxController {
   final RxBool admin = false.obs;
 
   static CategoryController get to => Get.find();
+  final UrlController _urlController = Get.find<UrlController>();
 
   String? _uidCurrent;
   String? get uidCurrent => _uidCurrent;
@@ -76,7 +77,6 @@ class CategoryController extends GetxController {
     await _auth.signOut();
   }
 
-// Insert a test CategoryModel into Firestore
   CategoryModel testCategory = CategoryModel(
     uid: StringUtil.generateRandomId(15),
     title: 'title',
@@ -94,7 +94,6 @@ class CategoryController extends GetxController {
 
   Future<void> insertCategoryName(String title) async {
     try {
-      // Create a new category model
       CategoryModel category = CategoryModel(
         uid: StringUtil.generateRandomId(15),
         title: title,
@@ -105,9 +104,7 @@ class CategoryController extends GetxController {
         imageUrl: 'https://cdn.onlinewebfonts.com/svg/img_259453.png',
         numItems: 0,
       );
-      // Convert the CategoryModel to a JSON map
       Map<String, dynamic> jsonData = category.toJson();
-      // Insert the new category into Firestore
       await _db.collection('category').doc(category.uid).set(jsonData);
       print('New category inserted successfully');
     } catch (error) {
@@ -117,21 +114,16 @@ class CategoryController extends GetxController {
 
   Future<void> insertCategory(CategoryModel testCategory) async {
     try {
-      // Convert the CategoryModel to a JSON map
       Map<String, dynamic> jsonData = testCategory.toJson();
-
-      // Insert the test CategoryModel into Firestore
       await _db.collection('category').doc(testCategory.uid).set(jsonData);
-
       print('Test Category inserted successfully');
     } catch (error) {
       print('Error inserting test Category: $error');
     }
   }
 
-  Future<void> deleteCategory(CategoryModel CategoryModel) async {
+  Future<void> deleteCategoryX(CategoryModel CategoryModel) async {
     try {
-      // Delete the CategoryModel from Firestore
       await _db.collection('category').doc(CategoryModel.uid).delete();
       print('CategoryModel deleted successfully');
     } catch (error) {
@@ -139,12 +131,20 @@ class CategoryController extends GetxController {
     }
   }
 
+  Future<void> deleteCategory(CategoryModel categoryModel) async {
+    try {
+      //delete url contents
+      await _urlController.deleteUrlByCategory(categoryModel.uid);
+      await _db.collection('category').doc(categoryModel.uid).delete();
+      print('Category deleted successfully');
+    } catch (error) {
+      print('Error deleting category: $error');
+    }
+  }
+
   Future<void> updateCategory(CategoryModel updatedCategory) async {
     try {
-      // Convert the updated CategoryModel to a JSON map
       final jsonData = updatedCategory.toJson();
-
-      // Update the Category document in Firestore
       await _db.collection('category').doc(updatedCategory.uid).update(jsonData);
 
       print('Category updated successfully!');
@@ -164,10 +164,7 @@ class CategoryController extends GetxController {
 
   void saverChanges(CategoryModel updatedCategoryModel) async {
     try {
-      // Convert the updated CategoryModel to a JSON map
       final jsonData = updatedCategoryModel.toJson();
-
-      // Update the Category document in Firestore
       await _db.collection('category').doc(updatedCategoryModel.uid).update(jsonData);
 
       print('Category updated successfully');

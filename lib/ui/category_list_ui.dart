@@ -12,7 +12,7 @@ class CategoryListUI extends StatelessWidget {
     Get.dialog(//no context required
       AlertDialog(
         title: Text('Delete Category'),
-        content: Text('Are you sure you want to delete this category?'),
+        content: Text('Delete this category AND it\'s contents?'),
         actions: [
           TextButton(
             child: Text('Cancel'),

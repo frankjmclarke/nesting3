@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_starter/controllers/controllers.dart';
 import 'package:flutter_starter/constants/constants.dart';
+import 'package:flutter_starter/controllers/url_controller.dart';
 import 'package:flutter_starter/ui/components/components.dart';
 import 'package:flutter_starter/helpers/helpers.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ void main() async {
   Get.put<ThemeController>(ThemeController());
   Get.put<LanguageController>(LanguageController());
   Get.put<StorageController>(StorageController());
+  Get.put<UrlController>(UrlController());
   runApp(MyApp());
 }
 

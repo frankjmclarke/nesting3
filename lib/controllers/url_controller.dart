@@ -211,6 +211,24 @@ class UrlController extends GetxController {
     }
   }
 
+  Future<void> deleteUrlByCategory(String category) async {
+    try {
+      final urlsSnapshot = await _db
+          .collection('urls')
+          .where('category', isEqualTo: category)
+          .get();
+
+      for (final doc in urlsSnapshot.docs) {
+        final urlModel = UrlModel.fromMap(doc.data());
+        await deleteUrl(urlModel);
+      }
+
+      print('Urls deleted successfully for category: ${category}');
+    } catch (error) {
+      print('Error deleting urls for category: ${category}, $error');
+    }
+  }
+
   Future<void> updateUrl(UrlModel updatedUrl) async {
     try {
       // Convert the updated UrlModel to a JSON map
