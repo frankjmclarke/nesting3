@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:html/parser.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import '../helpers/image.dart';
 import '../helpers/string_util.dart';
@@ -66,32 +67,38 @@ class UrlController extends GetxController {
     return false;
   }
 
-  Future<String> _fetchHtmlText(String url) async {
+  Future<List<String>> _fetchHtmlText(String url) async {
     try {
       final response = await HttpClient().getUrl(Uri.parse(url));
       final responseBody = await response.close();
       final htmlBytes = await responseBody.toList();
       final htmlText =
-          String.fromCharCodes(htmlBytes.expand((byteList) => byteList));
-      final imageUrl =
-          await getImageUrl(htmlText); // Await the getImageUrl function call
+      String.fromCharCodes(htmlBytes.expand((byteList) => byteList));
+      final document = parse(htmlText);
+      final titleElement = document.querySelector('title');
+      final name = titleElement?.text ?? '';
+
+      final imageUrl = await getImageUrl(htmlText); // Await the getImageUrl function call
       print("IIIIIIIIIIIII $imageUrl");
-      return imageUrl;
+
+      return [name, imageUrl];
     } catch (error) {
       print('Error fetching HTML: $error');
     }
-    return '';
+    return ['', '']; // Return empty strings if there was an error
   }
+
 
   Future<void> addTextToListIfUnique(String cat) async {
     if (!containsText(_sharedText)) {
-      String imageUrl = await _fetchHtmlText(_sharedText);
-      print("AAAAAA imageUrl " + imageUrl);
+      List<String> result = await _fetchHtmlText(_sharedText);
+      String name = result[0];
+      String imageUrl = result[1];
       final currentList = firestoreUrlList.value ?? UrlModelList(urls: []);
       final newUrlModel = UrlModel(
         uid: '',
         email: '',
-        name: '',
+        name: name,
         url: _sharedText,
         imageUrl: imageUrl,
         address: '',
